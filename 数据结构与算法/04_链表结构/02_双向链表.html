@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>双向链表</title>
+  </head>
+  <body>
+    <script>
+      function DoublyLinkedList() {
+        // 内部类: 节点类
+        function Node(data) {
+          this.data = data;
+          this.prev = null;
+          this.next = null;
+        }
+
+        // 属性
+        this.head = null;
+        this.tail = null;
+        this.length = 0;
+
+        // 1.追加方法
+        DoublyLinkedList.prototype.append = function (data) {
+          // 1.根据data创建节点
+          var newNode = new Node(data);
+
+          // 2.判断添加的是否是第一个节点
+          if (this.length == 0) {
+            this.head = newNode;
+            this.tail = newNode;
+          } else {
+            newNode.prev = this.tail;
+            this.tail.next = newNode;
+            this.tail = newNode;
+          }
+
+          // 3.length+1
+          this.length += 1;
+        };
+
+        // 2.将链表转成字符串形式
+        // 2.1 toString方法
+        DoublyLinkedList.prototype.toString = function () {
+          return this.backwardString();
+        };
+
+        // 2.1 forwardString方法
+        DoublyLinkedList.prototype.forwardString = function () {
+          var current = this.tail;
+          var resultString = "";
+
+          // 向前遍历
+          while (current) {
+            resultString += current.data + " ";
+            current = current.prev;
+          }
+
+          return resultString;
+        };
+
+        // 2.2 backwardString方法
+        DoublyLinkedList.prototype.backwardString = function () {
+          var current = this.head;
+          var resultString = "";
+
+          // 向后遍历
+          while (current) {
+            resultString += current.data + " ";
+            current = current.next;
+          }
+
+          return resultString;
+        };
+
+        // 3.insert方法
+        DoublyLinkedList.prototype.insert = function (position, data) {
+          // 1.越界判断
+          if (position < 0 || position > this.length) return false;
+
+          // 2.根据data创建新的节点
+          var newNode = new Node(data);
+
+          //3.判断原来的列表是否为空
+          if (this.length == 0) {
+            this.head = newNode
+            this.tail = newNode
+          } else {
+            // 3.1 判断position是否为0
+            if (position == 0) {
+              // 原来的第一个节点.prev指向新节点
+              this.head.prev = newNode;
+              newNode.next = this.head;
+              this.head = newNode;
+            } else if (position == this.length) {
+              newNode.prev = this.tail;
+              this.tail.next = newNode;
+              this.tail = newNode;
+            } else {
+              var current = this.head;
+              var index = 0;
+
+              while (index++ < position) {
+                current = current.next;
+              }
+
+              newNode.next = current
+              newNode.prev = current.prev
+              current.prev.next = newNode
+              current.prev = newNode
+            }
+          }
+
+          // 4.length+1
+          this.length += 1
+
+          return true
+        }
+
+        //4.get方法
+        DoublyLinkedList.prototype.get = function (position) {
+          // 1.越界判断
+          if (position < 0 || position >= this.length) return null
+
+          // this.length / 2 > position: 从头向后遍历
+          // this.length / 2 < position: 从后向前遍历
+
+          if (this.length / 2 > position) {
+            // 2.获取元素
+            var current = this.head
+            var index = 0
+
+            while (index++ < position) {
+              current = current.next
+            }
+          } else {
+            var current = this.tail
+            var index = this.length - 1
+
+            while (index-- > position) {
+              current = current.prev
+            }
+          }
+
+          return current.data
+        }
+
+        // 5.indexOf方法
+        DoublyLinkedList.prototype.indexOf = function (data) {
+          // 1.获取元素
+          var current = this.head
+          var index = 0
+
+          while (current) {
+            if (current.data === data) {
+              return index
+            }
+
+            current = current.next
+            index += 1
+          }
+
+          return -1
+        }
+
+        //6.update方法
+        DoublyLinkedList.prototype.update = function (position, newData) {
+          // 1.越界判断
+          if (position < 0 || position >= this.length) return false
+
+          // 2.获取元素
+          var current = this.head
+          var index = 0
+
+          while (index++ < position) {
+            current = current.next
+          }
+
+          // 3.修改找到节点的data信息
+          current.data = newData
+
+          return true
+        }
+
+        // 7.removeAt方法
+        DoublyLinkedList.prototype.removeAt = function (position) {
+          // 1.越界判断
+          if (position < 0 || position >= this.length) return null
+
+          // 2.判断是否只有一个节点
+          var current = this.head
+          if (this.length == 1) {
+            this.head = null
+            this.tail = null
+          } else {
+            // 3.判断删除的是第一个节点
+            if (position === 0) {
+              this.head = this.head.next
+              this.head.prev = null
+            } else if (position === this.length - 1) { // 最后节点
+              current = this.tail
+              this.tail.prev.next = null
+              this.tail = this.tail.prev
+            } else {
+              var index = 0
+
+              while (index++ < position) {
+                current = current.next
+              }
+
+              // 4.修改节点指针
+              current.prev.next = current.next
+              current.next.prev = current.prev
+            }
+          }
+
+          // 3.length-1
+          this.length -= 1
+          
+          return current.data
+        }
+
+        // 8.remove方法
+        DoublyLinkedList.prototype.remove = function (data) {
+          // 1.获取data在列表中的位置
+          var position = this.indexOf(data)
+
+          // 2.根据位置信息，删除节点
+          return this.removeAt(position)
+        }
+
+        // 9.isEmpty方法
+        DoublyLinkedList.prototype.isEmpty = function () {
+          return this.length == 0
+        }
+
+        //10.size方法
+        DoublyLinkedList.prototype.size = function () {
+          return this.length
+        }
+
+        // 11.获取链表的第一个元素
+        DoublyLinkedList.prototype.getHead = function () {
+          return this.head.data
+        }
+
+        //12.获取链表的最后一个元素
+        DoublyLinkedList.prototype.getTail = function () {
+          return this.tail.data
+        }
+      }
+
+      // 测试
+      var list = new DoublyLinkedList();
+      list.append("aaa");
+      list.append("bbb");
+      list.append("ccc");
+      // alert(list);
+      // alert(list.backwardString());
+      // alert(list.forwardString());
+
+      list.insert(0, "abc");
+      list.insert(4, "cba");
+      list.insert(2, "nba");
+      
+      // alert(list.get(0));
+      // alert(list.get(2));
+      // alert(list.indexOf('nba'));
+      // list.update(0,'qqq')
+      // alert(list);
+      // alert(list.removeAt(1));
+      // alert(list.remove('ccc'));
+      alert(list.getHead())
+      alert(list.getTail())
+    </script>
+  </body>
+</html>
+    </script>
+  </body>
+</html>

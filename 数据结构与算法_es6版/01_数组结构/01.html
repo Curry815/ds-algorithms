@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let arr = new Array(1, 2, 3, 4, 5);
+      arr.splice(0, 2, 5);
+      console.log(arr); // [5, 3, 4, 5]
+
+      let arr2 = [4, 2, 6, 9, 3, 1];
+      arr2.sort((a, b) => a - b); // 升序
+      arr2.sort((a, b) => b - a); // 降序
+      console.log(arr2);
+
+      let arr3 = [1, 2, 3];
+      let arr4 = [4, 5, 6];
+      let arr5 = arr3.concat(arr4);
+      console.log(arr5); // [1, 2, 3, 4, 5, 6]
+
+      // 迭代方法
+      let res = arr3.every((item) => item > 0);
+      console.log(res); // true
+      let res2 = arr3.some((item) => item > 10);
+      console.log(res2); // false
+      let res3 = arr3.filter((item) => item > 2);
+      console.log(res3); // [3]
+      let res4 = arr3.map((item) => item * 2);
+      console.log(res4); // [2, 4, 6]
+      let res5 = arr3.reduce((pre, cur) => pre + cur);
+      console.log(res5); // 6
+
+      // 迭代器对象
+      console.log(arr);
+
+      let ite = arr[Symbol.iterator]();
+      ite.next(); // {value: 1, done: false}
+      ite.next(); // {value: 2, done: false}
+      ite.next(); // {value: 3, done: false}
+      ite.next(); // {value: 4, done: false}
+      ite.next(); // {value: 5, done: false}
+      ite.next(); // {value: undefined, done: true}
+
+      // for (const i of arr) {
+      //   console.log(i);
+      // }
+
+      // console.log(arr.entries());
+      // for (const i of arr.entries()) {
+      //   console.log(i);
+      // }
+      // for (const i of arr.values()) {
+      //   console.log(i);
+      // }
+
+      // Array.from
+      function test() {
+        console.log(Array.from(arguments));
+      }
+      test(1, 2, 3);
+
+      // 搜索 indexOf lastIndexOf includes find findIndex findLast findLastIndex
+      let arr6 = [10, 33, 46, 67, 88];
+      console.log(arr6.indexOf(33)); // 1
+      console.log(arr6.includes(10)); // true
+
+      let res6 = arr6.find((item) => item > 10);
+      console.log(res6); // 33
+      let res7 = arr6.findIndex((item) => item > 10);
+      console.log(res7); // 1
+      let res8 = arr6.findLast((item) => item > 10);
+      console.log(res8); // 88
+      let res9 = arr6.findLastIndex((item) => item > 10);
+      console.log(res9); // 4
+
+      let arr7 = [
+        [98, 99, 100],
+        [101, 101, 99],
+        [80, 83, 69],
+      ];
+
+      for (let i = 0; i < arr7.length; i++) {
+        console.log(`第${i + 1}个人的成绩`);
+        for (let j = 0; j < arr7[i].length; j++) {
+          console.log(arr7[i][j]);
+        }
+      }
+    </script>
+  </body>
+</html>

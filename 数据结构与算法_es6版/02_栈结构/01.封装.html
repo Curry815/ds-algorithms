@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      class Stack {
+        // constructor() {
+        //   this.items = [];
+        // }
+
+        #items = []; // 私有属性
+
+        // 出栈
+        pop() {
+          return this.#items.pop();
+        }
+
+        // 入栈
+        push(data) {
+          this.#items.push(data);
+        }
+
+        // 返回栈顶元素
+        peek() {
+          // return this.#items[this.#items.length - 1];
+          return this.#items.at(-1);
+        }
+
+        // 判断栈是否为空
+        isEmpty() {
+          return this.#items.length === 0;
+        }
+
+        // 获取栈中元素个数
+        size() {
+          return this.#items.length;
+        }
+
+        // 栈的字符串表示
+        toString() {
+          return this.#items.join(" ");
+        }
+      }
+
+      let stack = new Stack();
+    </script>
+  </body>
+</html>
